@@ -58,7 +58,17 @@ def get_laws(req):
    records = cursor.fetchall()
    db.close()
 
-   return render_to_response('templates/laws.html', {'users': records}, request=req)  
+   return render_to_response('templates/laws.html', {'users': records}, request=req)
+
+def get_IA(req):
+  
+   db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+   cursor = db.cursor()
+   cursor.execute("select first_name, last_name, email from Users;")
+   records = cursor.fetchall()
+   db.close()
+
+   return render_to_response('templates/IA.html', {'users': records}, request=req)    
 
 
 ''' Route Configurations '''
@@ -82,6 +92,9 @@ if __name__ == '__main__':
 
   config.add_route('get_laws', '/laws')
   config.add_view(get_laws, route_name='get_laws')
+
+  config.add_route('get_IA', '/IA')
+  config.add_view(get_IA, route_name='get_IA')
 
   config.add_static_view(name='/', path='./public', cache_max_age=3600)
 
