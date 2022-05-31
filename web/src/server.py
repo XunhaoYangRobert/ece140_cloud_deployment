@@ -78,7 +78,17 @@ def get_UX(req):
    records = cursor.fetchall()
    db.close()
 
-   return render_to_response('templates/UX.html', {'users': records}, request=req)    
+   return render_to_response('templates/UX.html', {'users': records}, request=req)   
+
+def get_pivot(req):
+  
+   db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+   cursor = db.cursor()
+   cursor.execute("select first_name, last_name, email from Users;")
+   records = cursor.fetchall()
+   db.close()
+
+   return render_to_response('templates/pivot.html', {'users': records}, request=req)    
 
 ''' Route Configurations '''
 if __name__ == '__main__':
@@ -107,6 +117,9 @@ if __name__ == '__main__':
 
   config.add_route('get_UX', '/UX')
   config.add_view(get_UX, route_name='get_UX')
+
+  config.add_route('get_pivot', '/pivot')
+  config.add_view(get_pivot, route_name='get_pivot')
 
   config.add_static_view(name='/', path='./public', cache_max_age=3600)
 
